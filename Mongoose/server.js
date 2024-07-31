@@ -36,26 +36,6 @@ app.post(`/person`, async(req, res)=>{
     }
 
 });
-// POST route to add a person
-app.post(`/person`, async(req, res)=>{
-   try{
-             // Asumming the the request body contains the person data
-             const data = req.body;
-
-             // Create new person document using  the mongoose model
-             const newPerson = new Person(data);
-
-             // Save the new peeson to the database
-             const response = await  newPerson.save();
-             console.log(`data saved`);
-             res.status(200).json(response);
-       }
-    catch(err)
-    {
-             console.log(err);
-             res.status(500).json({error: `Internal Server Error`});
-    }
-})
 
 // GET route to get person
 app.get(`/person`, async (req, res)=>{
