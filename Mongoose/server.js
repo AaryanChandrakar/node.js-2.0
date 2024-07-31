@@ -10,25 +10,26 @@ app.get(`/`, (req, res)=>{
     res.send('Welcome to my hotel... How can I help you ?, we have list of menus')
 })
 
-app.post(`/person`,(req, res)=>{
+// POST route to add a person
+app.post(`/person`, async(req, res)=>{
+   try{
+             // Asumming the the request body contains the person data
+             const data = req.body;
 
-    // Asumming the the request body contains the person data
-    const data = req.body;
+             // Create new person document using  the mongoose model
+             const newPerson = new Person(data);
 
-    // Create new person document using  the mongoose model
-    const newPerson = new Person(data);
+             // Save the new peeson to the database
+             const response = await  newPerson.save();
+             console.log(`data saved`);
+             res.status(200).json(response);
+       }
+    catch(err)
+    {
+             console.log(err);
+             res.status(500).json({error: `Internal Server Error`});
+    }
 
-    // Save the new peeson to the database
-    newPerson.save((error, savedPerson) => {
-        if(error) {
-                console.log('Error saving person: ', error);
-                res.start().res.json({error: 'Internal server error'})
-            }
-        else {
-               console.log('Data saved successfullu');
-               res.status(200).json(savedPerson)
-           }
-    })
 })
 app.listen(3500, ()=>{
     console.log("Listening to Port 3500");
