@@ -14,8 +14,28 @@ app.get(`/`, (req, res)=>{
     res.send('Welcome to my hotel... How can I help you ?, we have list of menus')
 })
 
-
 //-------------------------------------PERSON----------------------------------------------------------
+// POST route to add a person
+app.post(`/person`, async(req, res)=>{
+   try{
+             // Asumming the the request body contains the person data
+             const data = req.body;
+
+             // Create new person document using  the mongoose model
+             const newPerson = new Person(data);
+
+             // Save the new peeson to the database
+             const response = await  newPerson.save();
+             console.log(`data saved`);
+             res.status(200).json(response);
+       }
+    catch(err)
+    {
+             console.log(err);
+             res.status(500).json({error: `Internal Server Error`});
+    }
+
+});
 // POST route to add a person
 app.post(`/person`, async(req, res)=>{
    try{
@@ -87,4 +107,4 @@ app.get(`/menu`, async (req, res)=>{
 
 app.listen(3500, ()=>{
     console.log("Listening to Port 3500");
-})
+});
