@@ -48,7 +48,28 @@ app.get(`/person`, async (req, res)=>{
         console.log(`error`);
         res.status(500).json({error: `Internal Server Error`});
     }
-})
+});
+
+//--------------------------------------------PERSON/WORK------------------------------------------
+app.get(`/person/:workType`, async(req, res)=>{
+    try{
+        const workType = req.params.workType;  // extract the workType from the URL parameter
+
+        if(workType=='Chef' || workType =='Manager' || workType=='Waiter'){
+            const response = await Person.find({work: workType});
+            console.log(`response fetched`);
+            res.status(200).json(response); 
+
+        }
+        else{
+            res.status(404).json({erre: `Invalid Work Type`});
+        }
+    }
+    catch(err){
+        console.log("Error");
+        res.status(500).json({error: `Internal server Error`});
+    }
+});
 
 
 //----------------------------------------------------MENU----------------------------------------------
